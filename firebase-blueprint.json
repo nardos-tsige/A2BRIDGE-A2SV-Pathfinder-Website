@@ -1,0 +1,106 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Represents a user profile with their stats.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique identifier of the user (from Firebase Auth)."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "The user's profile picture URL."
+        },
+        "bio": {
+          "type": "string",
+          "description": "The user's biography."
+        },
+        "github": {
+          "type": "string",
+          "description": "The user's GitHub profile URL."
+        },
+        "linkedin": {
+          "type": "string",
+          "description": "The user's LinkedIn profile URL."
+        },
+        "university": {
+          "type": "string",
+          "description": "The user's university."
+        },
+        "leetcode": {
+          "type": "string",
+          "description": "The user's LeetCode profile URL."
+        },
+        "problemsSolved": {
+          "type": "number",
+          "description": "Total number of problems solved."
+        },
+        "currentStreak": {
+          "type": "number",
+          "description": "Current active streak in days."
+        },
+        "daysActive": {
+          "type": "number",
+          "description": "Total number of active days."
+        },
+        "lastActiveDate": {
+          "type": "string",
+          "description": "The last date the user was active (YYYY-MM-DD)."
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "description": "The time the user profile was created."
+        }
+      },
+      "required": ["uid", "email", "problemsSolved", "currentStreak", "daysActive", "createdAt"]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "Represents a recent activity performed by the user.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the activity."
+        },
+        "description": {
+          "type": "string",
+          "description": "A short description of the activity."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of activity (e.g., 'problem_solved', 'event_added')."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "description": "The time the activity occurred."
+        }
+      },
+      "required": ["title", "description", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles and statistics."
+    },
+    "/users/{userId}/activities/{activityId}": {
+      "schema": {
+        "$ref": "#/entities/Activity"
+      },
+      "description": "Stores recent activities for a specific user."
+    }
+  }
+}
