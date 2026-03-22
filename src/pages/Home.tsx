@@ -64,7 +64,7 @@ function LandingPage() {
               to="/about"
               className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-xl transition-all border border-slate-700 flex items-center justify-center"
             >
-              Read My Story
+              About
             </Link>
           </div>
         </div>
