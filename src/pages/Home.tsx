@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
-import { db } from "../lib/firebase";
+import { db, handleFirestoreError, OperationType } from "../lib/firebase";
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 
 import { REAL_LEETCODE_PROBLEMS } from "./Tracker";
@@ -135,6 +135,8 @@ function Dashboard() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const acts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setActivities(acts);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, `users/${user.uid}/activities`);
     });
     return () => unsubscribe();
   }, [user]);
@@ -206,9 +208,17 @@ function Dashboard() {
               <Target className="w-5 h-5" /> Interview Tip of the Day
             </h3>
             <p className="text-xl font-medium leading-relaxed max-w-2xl relative z-10">
-              "When explaining your code, always start with the brute force
-              approach before jumping into the optimized solution. It shows your
-              thought process."
+              "{
+                [
+                  "When explaining your code, always start with the brute force approach before jumping into the optimized solution. It shows your thought process.",
+                  "Think out loud! Interviewers want to know how you approach a problem, not just the final code.",
+                  "If you get stuck, don't panic. Ask clarifying questions or state your assumptions.",
+                  "Always test your code with edge cases before saying you are finished.",
+                  "Write clean, readable code. Use meaningful variable names instead of single letters.",
+                  "Communication is just as important as coding. Keep a dialogue going with your interviewer.",
+                  "Don't rush to code. Spend the first 5-10 minutes understanding the problem and discussing the approach."
+                ][new Date().getDay() % 7]
+              }"
             </p>
             <Link
               to="/interview"

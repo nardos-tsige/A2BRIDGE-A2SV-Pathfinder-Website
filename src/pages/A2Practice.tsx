@@ -4,8 +4,8 @@ import { CheckCircle2, Circle, Play, Lightbulb, Code2, RefreshCw, Loader2 } from
 import { cn } from "../lib/utils";
 import { A2_QUESTIONS, A2Question } from "../data/a2practice";
 import { useAuth } from "../context/AuthContext";
-import { logActivity, db } from "../lib/firebase";
-import { doc, updateDoc, increment } from "firebase/firestore";
+import { logActivity, db, handleFirestoreError, OperationType } from "../lib/firebase";
+import { doc, updateDoc, increment, arrayUnion, arrayRemove } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 
 export default function A2Practice() {
@@ -66,16 +66,54 @@ export default function A2Practice() {
   // Load saved progress
   useEffect(() => {
     const savedCode = localStorage.getItem("a2practice_code_py");
-    const savedCompleted = localStorage.getItem("a2practice_completed_py");
     if (savedCode) setUserCode(JSON.parse(savedCode));
-    if (savedCompleted) setCompleted(new Set(JSON.parse(savedCompleted)));
-  }, []);
+    
+    if (user && user.completedA2Practice) {
+      setCompleted(new Set(user.completedA2Practice));
+    } else {
+      const savedCompleted = localStorage.getItem("a2practice_completed_py");
+      if (savedCompleted) setCompleted(new Set(JSON.parse(savedCompleted)));
+    }
+  }, [user?.completedA2Practice]);
 
   // Save progress
   useEffect(() => {
     localStorage.setItem("a2practice_code_py", JSON.stringify(userCode));
     localStorage.setItem("a2practice_completed_py", JSON.stringify(Array.from(completed)));
   }, [userCode, completed]);
+
+  const toggleComplete = async (id: number) => {
+    const newCompleted = new Set(completed);
+    const question = A2_QUESTIONS.find(q => q.id === id);
+    
+    if (newCompleted.has(id)) {
+      newCompleted.delete(id);
+      if (user && question) {
+        try {
+          await updateDoc(doc(db, 'users', user.uid), {
+            problemsSolved: increment(-1),
+            completedA2Practice: arrayRemove(id)
+          });
+        } catch (error) {
+          handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
+        }
+      }
+    } else {
+      newCompleted.add(id);
+      if (user && question) {
+        try {
+          await updateDoc(doc(db, 'users', user.uid), {
+            problemsSolved: increment(1),
+            completedA2Practice: arrayUnion(id)
+          });
+          await logActivity(user.uid, `Solved: ${question.title}`, `Completed an A2Practice problem.`, 'problem_solved');
+        } catch (error) {
+          handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
+        }
+      }
+    }
+    setCompleted(newCompleted);
+  };
 
   const handleCodeChange = (id: number, code: string) => {
     setUserCode(prev => ({ ...prev, [id]: code }));
@@ -136,10 +174,15 @@ export default function A2Practice() {
       if (!completed.has(question.id)) {
         setCompleted(prev => new Set(prev).add(question.id));
         if (user) {
-          await updateDoc(doc(db, 'users', user.uid), {
-            problemsSolved: increment(1)
-          });
-          await logActivity(user.uid, `Solved: ${question.title}`, `Completed an A2Practice problem in Python.`, 'problem_solved');
+          try {
+            await updateDoc(doc(db, 'users', user.uid), {
+              problemsSolved: increment(1),
+              completedA2Practice: arrayUnion(question.id)
+            });
+            await logActivity(user.uid, `Solved: ${question.title}`, `Completed an A2Practice problem in Python.`, 'problem_solved');
+          } catch (error) {
+            handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
+          }
         }
       }
       
@@ -175,10 +218,13 @@ export default function A2Practice() {
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
           A2Practice: Interactive Coding
         </h1>
-        <p className="text-slate-600 dark:text-slate-400 text-lg max-w-3xl">
+        <p className="text-slate-600 dark:text-slate-400 text-lg max-w-3xl mb-4">
           Master the basics with these {A2_QUESTIONS.length} interactive problems covering Strings, Lists, Tuples, and Numbers. 
           Write your Python solution, run it against test cases, and track your progress!
         </p>
+        <div className="bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 p-4 rounded-xl text-teal-800 dark:text-teal-300 text-sm">
+          <strong>Note:</strong> This section is for complete beginners who don't know about Python at all. Start here to build your foundation!
+        </div>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -188,9 +234,6 @@ export default function A2Practice() {
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
                 Overall Progress
               </h3>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">
-                {completed.size} of {A2_QUESTIONS.length} problems solved
-              </p>
             </div>
             <div className="text-right">
               <span className="text-3xl font-bold text-teal-500">
@@ -218,13 +261,24 @@ export default function A2Practice() {
 
         <div className="divide-y divide-slate-200 dark:divide-slate-800">
           {A2_QUESTIONS.map((question) => (
-            <div key={question.id} id={`problem-${question.id}`} className="p-4 sm:p-6 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-              <div className="flex items-center justify-between gap-4 cursor-pointer" onClick={() => setExpandedId(expandedId === question.id ? null : question.id)}>
+            <div key={question.id} id={`problem-${question.id}`} className={cn(
+              "transition-colors",
+              completed.has(question.id)
+                ? "bg-emerald-50/50 dark:bg-emerald-900/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
+            )}>
+              <div className="p-4 sm:p-6 flex items-center justify-between gap-4 cursor-pointer" onClick={() => setExpandedId(expandedId === question.id ? null : question.id)}>
                 <div className="flex items-center gap-4 flex-1">
-                  <div
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleComplete(question.id);
+                    }}
                     className={cn(
-                      "flex-shrink-0 transition-colors",
-                      completed.has(question.id) ? "text-emerald-500" : "text-slate-300 dark:text-slate-600"
+                      "p-2 rounded-full transition-colors flex-shrink-0",
+                      completed.has(question.id)
+                        ? "text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10"
+                        : "text-slate-300 dark:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800",
                     )}
                   >
                     {completed.has(question.id) ? (
@@ -232,11 +286,11 @@ export default function A2Practice() {
                     ) : (
                       <Circle className="w-6 h-6" />
                     )}
-                  </div>
+                  </button>
                   <div>
                     <h3 className={cn(
                       "font-medium text-lg",
-                      completed.has(question.id) ? "text-slate-500 dark:text-slate-400" : "text-slate-900 dark:text-white"
+                      completed.has(question.id) ? "text-slate-500 dark:text-slate-400 line-through" : "text-slate-900 dark:text-white"
                     )}>
                       {question.id}. {question.title}
                     </h3>

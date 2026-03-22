@@ -68,6 +68,13 @@ export default function Calendar() {
           triggered.forEach(t => {
             if (!newReminders.find(r => r.id === t.id)) {
               newReminders.push(t);
+              // Trigger real browser notification
+              if ("Notification" in window && Notification.permission === "granted") {
+                new Notification("A2BRIDGE Reminder", {
+                  body: `It's time for: ${t.title}`,
+                  icon: "/favicon.ico" // Optional, if you have one
+                });
+              }
             }
           });
           return newReminders;
@@ -115,7 +122,18 @@ export default function Calendar() {
     setIsAddingEvent(false);
   };
 
-  const toggleReminder = (id: string) => {
+  const toggleReminder = async (id: string) => {
+    const event = events.find(e => e.id === id);
+    if (event && !event.reminderSet) {
+      if ("Notification" in window) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+          await Notification.requestPermission();
+        }
+        if (Notification.permission === "denied") {
+          alert("Please enable notifications in your browser settings to receive reminders.");
+        }
+      }
+    }
     setEvents(events.map(ev => ev.id === id ? { ...ev, reminderSet: !ev.reminderSet } : ev));
   };
 

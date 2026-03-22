@@ -20,6 +20,9 @@ export interface User {
   university?: string;
   leetcode?: string;
   stats: UserStats;
+  completedLeetCode?: number[];
+  completedCodeforces?: number[];
+  completedA2Practice?: number[];
 }
 
 interface AuthContextType {
@@ -38,13 +41,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let unsubscribeDoc: (() => void) | null = null;
+
     const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (unsubscribeDoc) {
+        unsubscribeDoc();
+        unsubscribeDoc = null;
+      }
+
       if (firebaseUser) {
         // Ensure user profile exists in Firestore
         await initializeUserProfile(firebaseUser);
         
         // Listen to user document in Firestore
-        const unsubscribeDoc = onSnapshot(doc(db, 'users', firebaseUser.uid), (docSnap) => {
+        unsubscribeDoc = onSnapshot(doc(db, 'users', firebaseUser.uid), (docSnap) => {
           if (docSnap.exists()) {
             const data = docSnap.data();
             setUser({
@@ -61,7 +71,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 problemsSolved: data.problemsSolved || 0,
                 currentStreak: data.currentStreak || 0,
                 daysActive: data.daysActive || 0
-              }
+              },
+              completedLeetCode: data.completedLeetCode || [],
+              completedCodeforces: data.completedCodeforces || [],
+              completedA2Practice: data.completedA2Practice || []
             });
           } else {
             // Fallback if document doesn't exist yet or failed to create
@@ -74,7 +87,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 problemsSolved: 0,
                 currentStreak: 0,
                 daysActive: 0
-              }
+              },
+              completedLeetCode: [],
+              completedCodeforces: [],
+              completedA2Practice: []
             });
           }
           setLoading(false);
@@ -90,19 +106,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               problemsSolved: 0,
               currentStreak: 0,
               daysActive: 0
-            }
+            },
+            completedLeetCode: [],
+            completedCodeforces: [],
+            completedA2Practice: []
           });
           setLoading(false);
         });
-
-        return () => unsubscribeDoc();
       } else {
         setUser(null);
         setLoading(false);
       }
     });
 
-    return () => unsubscribeAuth();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeDoc) {
+        unsubscribeDoc();
+      }
+    };
   }, []);
 
   const loginWithGoogle = async () => {

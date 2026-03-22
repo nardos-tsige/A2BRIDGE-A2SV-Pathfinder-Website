@@ -6,8 +6,8 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { cn } from "../lib/utils";
 import { CODEFORCES_DETAILS } from "../data/codeforcesDetails";
 import { useAuth } from "../context/AuthContext";
-import { logActivity, db } from "../lib/firebase";
-import { doc, updateDoc, increment } from "firebase/firestore";
+import { logActivity, db, handleFirestoreError, OperationType } from "../lib/firebase";
+import { doc, updateDoc, increment, arrayUnion, arrayRemove } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 
 export const REAL_CODEFORCES_PROBLEMS = [
@@ -70,6 +70,12 @@ export default function Codeforces() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   useEffect(() => {
+    if (user && user.completedCodeforces) {
+      setCompleted(new Set(user.completedCodeforces));
+    }
+  }, [user?.completedCodeforces]);
+
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
     const searchTitle = params.get("search");
     if (searchTitle) {
@@ -93,10 +99,11 @@ export default function Codeforces() {
       if (user && problem) {
         try {
           await updateDoc(doc(db, 'users', user.uid), {
-            problemsSolved: increment(-1)
+            problemsSolved: increment(-1),
+            completedCodeforces: arrayRemove(id)
           });
         } catch (error) {
-          console.error("Failed to update stats:", error);
+          handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
         }
       }
     } else {
@@ -104,11 +111,12 @@ export default function Codeforces() {
       if (user && problem) {
         try {
           await updateDoc(doc(db, 'users', user.uid), {
-            problemsSolved: increment(1)
+            problemsSolved: increment(1),
+            completedCodeforces: arrayUnion(id)
           });
           await logActivity(user.uid, `Solved: ${problem.title}`, `Completed a Codeforces problem.`, 'problem_solved');
         } catch (error) {
-          console.error("Failed to update stats:", error);
+          handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
         }
       }
     }
@@ -135,26 +143,34 @@ export default function Codeforces() {
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
           Codeforces Tracker
         </h1>
-        <p className="text-slate-600 dark:text-slate-400 text-lg max-w-3xl">
+        <p className="text-slate-600 dark:text-slate-400 text-lg max-w-3xl mb-4">
           Master competitive programming with these 32 curated Codeforces problems. 
           Don't forget to push your solutions to GitHub!
         </p>
+        <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl text-emerald-800 dark:text-emerald-300 text-sm">
+          <strong>Note:</strong> These are Codeforces questions just to get you started. As you finish them, look for more on Codeforces to continue your practice!
+        </div>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 md:col-span-3 flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
-              Overall Progress
-            </h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">
-              {completed.size} of {CODEFORCES_PROBLEMS.length} problems solved
-            </p>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 md:col-span-3 flex flex-col justify-center">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+                Overall Progress
+              </h3>
+            </div>
+            <div className="text-right">
+              <span className="text-3xl font-bold text-purple-500">
+                {Math.round((completed.size / CODEFORCES_PROBLEMS.length) * 100)}%
+              </span>
+            </div>
           </div>
-          <div className="text-right">
-            <span className="text-3xl font-bold text-purple-500">
-              {Math.round((completed.size / CODEFORCES_PROBLEMS.length) * 100)}%
-            </span>
+          <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
+            <div 
+              className="bg-purple-500 h-3 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${(completed.size / CODEFORCES_PROBLEMS.length) * 100}%` }}
+            ></div>
           </div>
         </div>
         <div className="bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-800 text-white flex flex-col justify-center items-center text-center">
@@ -178,14 +194,27 @@ export default function Codeforces() {
 
             return (
               <div key={problem.id} id={`problem-${problem.id}`} className="group">
-                <div className="p-4 sm:p-6 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                <div 
+                  onClick={() => toggleComplete(problem.id)}
+                  className={cn(
+                    "p-4 sm:p-6 transition-colors cursor-pointer",
+                    completed.has(problem.id)
+                      ? "bg-emerald-50/50 dark:bg-emerald-900/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                      : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                  )}
+                >
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4 flex-1">
                       <button
-                        onClick={() => toggleComplete(problem.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleComplete(problem.id);
+                        }}
                         className={cn(
-                          "flex-shrink-0 transition-colors",
-                          completed.has(problem.id) ? "text-emerald-500" : "text-slate-300 dark:text-slate-600 hover:text-emerald-400"
+                          "p-2 rounded-full transition-colors flex-shrink-0",
+                          completed.has(problem.id)
+                            ? "text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10"
+                            : "text-slate-300 dark:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800",
                         )}
                       >
                         {completed.has(problem.id) ? (
@@ -217,14 +246,14 @@ export default function Codeforces() {
                     <div className="flex items-center gap-3">
                       {attempted.has(problem.id) ? (
                         <button 
-                          onClick={() => setExpandedId(expandedId === problem.id ? null : problem.id)}
+                          onClick={(e) => { e.stopPropagation(); setExpandedId(expandedId === problem.id ? null : problem.id); }}
                           className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium flex items-center justify-center gap-1 px-3 py-2 bg-purple-50 dark:bg-purple-500/10 rounded-lg transition-colors"
                         >
                           <Unlock className="w-4 h-4" /> {expandedId === problem.id ? "Hide" : "View"}
                         </button>
                       ) : (
                         <button
-                          onClick={() => toggleAttempt(problem.id)}
+                          onClick={(e) => { e.stopPropagation(); toggleAttempt(problem.id); }}
                           className="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 text-sm font-medium flex items-center justify-center gap-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 rounded-lg transition-colors"
                           title="Mark as attempted to view explanation"
                         >
@@ -235,6 +264,7 @@ export default function Codeforces() {
                         href={problem.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
                         className="p-2 text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors"
                         title="Solve on Codeforces"
                       >

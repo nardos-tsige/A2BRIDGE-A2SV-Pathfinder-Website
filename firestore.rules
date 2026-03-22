@@ -48,7 +48,7 @@ service cloud.firestore {
     // ===============================================================
 
     function isValidUser(data) {
-      return hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoURL', 'bio', 'github', 'linkedin', 'university', 'leetcode', 'problemsSolved', 'currentStreak', 'daysActive', 'lastActiveDate', 'createdAt']) &&
+      return hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoURL', 'bio', 'github', 'linkedin', 'university', 'leetcode', 'problemsSolved', 'currentStreak', 'daysActive', 'lastActiveDate', 'createdAt', 'completedLeetCode', 'completedCodeforces', 'completedA2Practice']) &&
              data.uid is string && data.uid.size() > 0 && data.uid.size() < 100 &&
              data.email is string && data.email.size() > 0 && data.email.size() < 150 &&
              (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
@@ -62,6 +62,9 @@ service cloud.firestore {
              data.currentStreak is number && data.currentStreak >= 0 &&
              data.daysActive is number && data.daysActive >= 0 &&
              (!('lastActiveDate' in data) || (data.lastActiveDate is string && data.lastActiveDate.size() <= 20)) &&
+             (!('completedLeetCode' in data) || (data.completedLeetCode is list && data.completedLeetCode.size() <= 5000)) &&
+             (!('completedCodeforces' in data) || (data.completedCodeforces is list && data.completedCodeforces.size() <= 5000)) &&
+             (!('completedA2Practice' in data) || (data.completedA2Practice is list && data.completedA2Practice.size() <= 5000)) &&
              data.createdAt is timestamp;
     }
 

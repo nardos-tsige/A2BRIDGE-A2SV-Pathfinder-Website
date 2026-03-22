@@ -18,7 +18,7 @@ import {
   Save,
   X
 } from "lucide-react";
-import { db, logActivity } from "../lib/firebase";
+import { db, logActivity, handleFirestoreError, OperationType } from "../lib/firebase";
 import { collection, query, orderBy, limit, onSnapshot, doc, updateDoc } from "firebase/firestore";
 
 export default function Profile() {
@@ -57,6 +57,8 @@ export default function Profile() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const acts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setActivities(acts);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, `users/${user.uid}/activities`);
     });
     return () => unsubscribe();
   }, [user]);
@@ -74,7 +76,7 @@ export default function Profile() {
       await logActivity(user.uid, "Updated Profile", "Updated profile information.", "profile_update");
       setIsEditing(false);
     } catch (error) {
-      console.error("Error updating profile:", error);
+      handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
     }
   };
 

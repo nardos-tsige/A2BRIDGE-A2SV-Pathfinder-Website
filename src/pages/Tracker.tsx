@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useAuth } from "../context/AuthContext";
-import { logActivity, db } from "../lib/firebase";
-import { doc, updateDoc, increment } from "firebase/firestore";
+import { logActivity, db, handleFirestoreError, OperationType } from "../lib/firebase";
+import { doc, updateDoc, increment, arrayUnion, arrayRemove } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 
 // Real LeetCode problems
@@ -215,6 +215,15 @@ export default function Tracker() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   useEffect(() => {
+    if (user && user.completedLeetCode) {
+      setProblems(prev => prev.map(p => ({
+        ...p,
+        completed: user.completedLeetCode?.includes(p.id) || false
+      })));
+    }
+  }, [user?.completedLeetCode]);
+
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
     const searchTitle = params.get("search");
     if (searchTitle) {
@@ -248,13 +257,14 @@ export default function Tracker() {
     if (user && problemTitle) {
       try {
         await updateDoc(doc(db, 'users', user.uid), {
-          problemsSolved: increment(wasCompleted ? -1 : 1)
+          problemsSolved: increment(wasCompleted ? -1 : 1),
+          completedLeetCode: wasCompleted ? arrayRemove(id) : arrayUnion(id)
         });
         if (!wasCompleted) {
           await logActivity(user.uid, `Solved: ${problemTitle}`, `Completed a LeetCode problem.`, 'problem_solved');
         }
       } catch (error) {
-        console.error("Failed to update stats:", error);
+        handleFirestoreError(error, OperationType.UPDATE, `users/${user.uid}`);
       }
     }
   };
@@ -289,25 +299,33 @@ export default function Tracker() {
         <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
           LeetCode Tracker
         </h1>
-        <p className="text-slate-500 dark:text-slate-400">
+        <p className="text-slate-500 dark:text-slate-400 mb-4">
           Curated {MOCK_PROBLEMS.length} problems to master data structures and algorithms.
         </p>
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-xl text-blue-800 dark:text-blue-300 text-sm">
+          <strong>Note:</strong> These are LeetCode questions just to get you started. As you finish them, look for more on LeetCode to continue your practice!
+        </div>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 md:col-span-3 flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
-              Overall Progress
-            </h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">
-              {completedCount} of {totalCount} problems solved
-            </p>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 md:col-span-3 flex flex-col justify-center">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+                Overall Progress
+              </h3>
+            </div>
+            <div className="text-right">
+              <span className="text-3xl font-bold text-purple-500">
+                {Math.round((completedCount / totalCount) * 100)}%
+              </span>
+            </div>
           </div>
-          <div className="text-right">
-            <span className="text-3xl font-bold text-purple-500">
-              {Math.round((completedCount / totalCount) * 100)}%
-            </span>
+          <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
+            <div 
+              className="bg-purple-500 h-3 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${(completedCount / totalCount) * 100}%` }}
+            ></div>
           </div>
         </div>
         <div className="bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-800 text-white flex flex-col justify-center items-center text-center">
@@ -356,14 +374,25 @@ export default function Tracker() {
                 <React.Fragment key={problem.id}>
                   <tr
                     id={`problem-${problem.id}`}
-                    className="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+                    onClick={() => toggleComplete(problem.id)}
+                    className={cn(
+                      "border-b border-slate-50 dark:border-slate-800/50 transition-colors cursor-pointer",
+                      problem.completed 
+                        ? "bg-emerald-50/50 dark:bg-emerald-900/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/20" 
+                        : "hover:bg-slate-50/50 dark:hover:bg-slate-800/30"
+                    )}
                   >
                     <td className="p-4 text-center">
                       <button
-                        onClick={() => toggleComplete(problem.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleComplete(problem.id);
+                        }}
                         className={cn(
-                          "transition-colors",
-                          problem.completed ? "text-emerald-500" : "text-slate-300 dark:text-slate-600 hover:text-emerald-400"
+                          "p-2 rounded-full transition-colors",
+                          problem.completed
+                            ? "text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10"
+                            : "text-slate-300 dark:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800",
                         )}
                       >
                         {problem.completed ? (
@@ -375,13 +404,17 @@ export default function Tracker() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-slate-900 dark:text-white">
+                        <span className={cn(
+                          "font-medium",
+                          problem.completed ? "text-slate-500 dark:text-slate-400 line-through" : "text-slate-900 dark:text-white"
+                        )}>
                           {problem.id}. {problem.title}
                         </span>
                         <a
                           href={problem.url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
                           className="text-slate-400 hover:text-purple-500 dark:hover:text-purple-400"
                         >
                           <ExternalLink className="w-4 h-4" />

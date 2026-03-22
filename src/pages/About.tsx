@@ -1,90 +1,210 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { 
+  Code2, 
+  Target, 
+  BookOpen, 
+  CalendarDays, 
+  MessageSquare, 
+  Rocket,
+  Heart,
+  Sparkles,
+  Globe,
+  Github,
+  Trophy,
+  Terminal
+} from "lucide-react";
 
 export default function About() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-12"
+    <div className="min-h-screen bg-slate-950 text-slate-200 py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Background decoration */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-purple-900/20 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-900/10 blur-[120px]" />
+      </div>
+
+      <motion.div 
+        className="max-w-6xl mx-auto relative z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
-        <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-            My Story
+        {/* Hero Section */}
+        <motion.div variants={itemVariants} className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 font-medium text-sm mb-6">
+            <Sparkles className="w-4 h-4" />
+            Empowering Ethiopian Tech Talent
+          </div>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-white">
+            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-emerald-400">A2BRIDGE</span>
           </h1>
-          <p className="text-xl text-slate-300 font-medium">
-            From rejection to building a bridge for others.
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            The ultimate all-in-one preparation platform designed exclusively for university students aspiring to join African to Silicon Valley (A2SV).
           </p>
-        </div>
+        </motion.div>
 
-        <div className="prose prose-lg prose-invert mx-auto">
-          <div className="bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-800 mb-8">
-            <p className="text-lg leading-relaxed text-slate-300 mb-6">
-              Hi, I'm <strong className="text-white">Nardos Tsige</strong>,
-              a second-year software engineering student at Addis Ababa
-              University (AAU).
-            </p>
-            <p className="text-lg leading-relaxed text-slate-300 mb-6">
-              Like many ambitious students, I dreamed of joining African to
-              Silicon Valley (A2SV). I saw it as the ultimate launchpad for my
-              career in tech. I applied, hoping for the best, but ultimately, I
-              was rejected.
-            </p>
-            <p className="text-lg leading-relaxed text-slate-300 mb-6">
-              The rejection stung, but it also opened my eyes. I realized that
-              my failure wasn't just about coding skills; it was due to a severe
-              lack of proper awareness, structured preparation, and accessible
-              resources. I didn't know what to expect in the interviews, which
-              LeetCode problems to focus on, or how to present myself
-              effectively.
-            </p>
-            <blockquote className="border-l-4 border-purple-500 pl-6 py-2 my-8 italic text-xl text-slate-200 font-medium bg-slate-800 rounded-r-xl">
-              "I decided that my rejection shouldn't be the end of the story. It
-              should be the beginning of someone else's success."
-            </blockquote>
-            <p className="text-lg leading-relaxed text-slate-300 mb-6">
-              That's why I created <strong>A2BRIDGE</strong>. My vision is to
-              help students from AAU, ASTU, and AASTU achieve their dreams of
-              joining A2SV. I want to bridge the gap between where you are now
-              and where you need to be.
-            </p>
-            <p className="text-lg leading-relaxed text-slate-300">
-              This platform is my commitment to making quality preparation
-              resources accessible to everyone, regardless of their background
-              or circumstances. It's designed to be easy to use, attractive, and
-              genuinely helpful for students facing the same challenges I did.
+        {/* The Vision Section */}
+        <motion.div variants={itemVariants} className="text-center mb-24">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Vision & Mission</h2>
+          <p className="text-xl text-slate-300 max-w-4xl mx-auto leading-relaxed bg-slate-900/50 p-8 rounded-3xl border border-slate-800 shadow-xl">
+            To democratize access to world-class tech education preparation for students at <span className="text-white font-bold">AAU, ASTU, and AASTU</span>. We aim to bridge the gap between raw potential and Silicon Valley standards by providing a structured, transparent, and comprehensive roadmap to ace the A2SV assessments.
+          </p>
+        </motion.div>
+
+        {/* Platform Contents Section */}
+        <motion.div variants={itemVariants} className="mb-24">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-white mb-4">What's Inside A2BRIDGE?</h2>
+            <p className="text-slate-400 text-lg">Everything you need to go from beginner to A2SV-ready.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Code2,
+                title: "LeetCode & Codeforces Trackers",
+                desc: "Curated lists of essential Data Structures and Algorithms problems. Track your progress, maintain streaks, and master the patterns A2SV tests for.",
+                color: "text-blue-400",
+                bg: "bg-blue-500/10"
+              },
+              {
+                icon: Target,
+                title: "A2Practice Arena",
+                desc: "Exclusive, custom-tailored practice questions designed to mirror the exact difficulty and style of the actual A2SV assessment environment.",
+                color: "text-emerald-400",
+                bg: "bg-emerald-500/10"
+              },
+              {
+                icon: MessageSquare,
+                title: "Interview Preparation",
+                desc: "Comprehensive guides covering behavioral questions, technical communication, and strategies to articulate your thought process clearly.",
+                color: "text-amber-400",
+                bg: "bg-amber-500/10"
+              },
+              {
+                icon: Globe,
+                title: "A2SV Awareness",
+                desc: "Demystifying the application process. Know exactly what A2SV looks for, understand the timeline, and learn how to make your application stand out.",
+                color: "text-purple-400",
+                bg: "bg-purple-500/10"
+              },
+              {
+                icon: CalendarDays,
+                title: "Consistency Calendar",
+                desc: "Visualize your daily dedication. A GitHub-style contribution graph keeps you motivated and accountable every single day of your journey.",
+                color: "text-rose-400",
+                bg: "bg-rose-500/10"
+              },
+              {
+                icon: Rocket,
+                title: "Performance Analytics",
+                desc: "Real-time dashboard showing your problem-solving velocity, active days, and overall readiness for the upcoming A2SV cohorts.",
+                color: "text-cyan-400",
+                bg: "bg-cyan-500/10"
+              }
+            ].map((feature, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -5 }}
+                className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:bg-slate-800/80 transition-all"
+              >
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 ${feature.bg}`}>
+                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                <p className="text-slate-400 leading-relaxed text-sm">
+                  {feature.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Portfolio Advice Section */}
+        <motion.div variants={itemVariants} className="mb-24">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Your Digital Footprint is Your Resume</h2>
+            <p className="text-slate-400 text-lg max-w-3xl mx-auto">
+              A2SV and top tech companies don't just look at your grades. They look at what you build and how consistently you solve problems. To stand out, you must focus heavily on building an undeniable portfolio.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-sm">
-              <h3 className="text-xl font-bold mb-2 text-purple-400">
-                Awareness
-              </h3>
-              <p className="text-slate-300 text-sm">
-                Demystifying the A2SV process so you know exactly what to
-                expect.
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 p-8 rounded-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-white/10"></div>
+              <Github className="w-10 h-10 text-white mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">GitHub</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Push code daily. Your GitHub graph is a testament to your consistency. Showcase your personal projects, contribute to open source, and demonstrate your ability to build real-world, scalable applications. Make sure your repositories have clean READMEs.
               </p>
             </div>
-            <div className="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-sm">
-              <h3 className="text-xl font-bold mb-2 text-amber-400">
-                Preparation
-              </h3>
-              <p className="text-slate-300 text-sm">
-                Curated LeetCode problems and interview prep materials.
+
+            <div className="bg-gradient-to-b from-amber-900/40 to-slate-900 border border-amber-700/30 p-8 rounded-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-amber-500/20"></div>
+              <Terminal className="w-10 h-10 text-amber-400 mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">LeetCode</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Master the patterns. A strong LeetCode profile proves your dedication to mastering Data Structures and Algorithms. Focus on medium and hard problems, participate in weekly contests, and aim for a high contest rating to prove your analytical skills.
               </p>
             </div>
-            <div className="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-sm">
-              <h3 className="text-xl font-bold mb-2 text-rose-400">
-                Tracking
-              </h3>
-              <p className="text-slate-300 text-sm">
-                Monitor your LeetCode and Codeforces progress seamlessly.
+
+            <div className="bg-gradient-to-b from-blue-900/40 to-slate-900 border border-blue-700/30 p-8 rounded-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-blue-500/20"></div>
+              <Trophy className="w-10 h-10 text-blue-400 mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Codeforces</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Speed and precision matter. Competitive programming sharpens your problem-solving speed and your awareness of edge cases. A solid Codeforces rating is highly respected and often serves as a massive advantage in the A2SV selection process.
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
+
+        {/* The Story Behind the Bridge (Compact) */}
+        <motion.div variants={itemVariants} className="mb-20 max-w-4xl mx-auto">
+          <div className="bg-slate-900/40 border border-slate-800 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+            
+            <Heart className="w-10 h-10 text-rose-500 mx-auto mb-6 relative z-10" />
+            <h2 className="text-3xl font-bold text-white mb-6 relative z-10">The Story Behind A2BRIDGE</h2>
+            
+            <div className="text-lg text-slate-300 leading-relaxed space-y-4 relative z-10">
+              <p>
+                Hi, I'm <strong className="text-purple-400">Nardos Tsige</strong>. Like many of you, I dreamed of joining A2SV. I applied with high hopes, but ultimately, I was rejected.
+              </p>
+              <p>
+                That rejection was a massive eye-opener. I realized my failure was due to a lack of structured preparation and insider awareness. I didn't know exactly what to expect or which problems to prioritize.
+              </p>
+              <blockquote className="text-2xl font-serif italic text-white leading-snug my-8 py-6 border-y border-slate-800">
+                "I decided that my rejection shouldn't be the end of the story. It should be the beginning of someone else's success."
+              </blockquote>
+              <p className="text-slate-400">
+                A2BRIDGE is my commitment to ensuring no talent from our universities is left behind due to a lack of guidance.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Footer CTA */}
+        <motion.div variants={itemVariants} className="mt-12 text-center pb-12">
+          <h2 className="text-2xl font-bold text-white mb-6">Ready to cross the bridge?</h2>
+          <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
+            Join the community of students preparing for their breakthrough. Your journey to Silicon Valley starts with a single line of code.
+          </p>
+        </motion.div>
       </motion.div>
     </div>
   );
