@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const { loginWithGoogle, loginWithEmail, signupWithEmail } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -41,8 +43,8 @@ export default function Login() {
       }
     } catch (err: any) {
       let errorMessage = err.message || "Failed to authenticate";
-      if (err.code === 'auth/invalid-credential') {
-        errorMessage = "Invalid email or password.";
+      if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+        errorMessage = "Invalid email or password. If you haven't created an account yet, please click 'Sign up' below.";
       } else if (err.code === 'auth/email-already-in-use') {
         errorMessage = "An account with this email already exists.";
       } else if (err.code === 'auth/weak-password') {
@@ -111,14 +113,23 @@ export default function Login() {
                   </button>
                 )}
               </div>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl border border-[#d4c8bd] dark:border-slate-700 bg-[#fdfcfb] dark:bg-slate-800 text-[#4a3b32] dark:text-white placeholder-[#a89f96] dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#b07d5b] dark:focus:ring-purple-500 transition-shadow"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-3 rounded-xl border border-[#d4c8bd] dark:border-slate-700 bg-[#fdfcfb] dark:bg-slate-800 text-[#4a3b32] dark:text-white placeholder-[#a89f96] dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#b07d5b] dark:focus:ring-purple-500 transition-shadow pr-12"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a89f96] hover:text-[#8c6b54] dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
 
             <button
