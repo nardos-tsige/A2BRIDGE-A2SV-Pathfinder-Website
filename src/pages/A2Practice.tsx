@@ -37,30 +37,53 @@ export default function A2Practice() {
   }, [location.search]);
 
   useEffect(() => {
-    const loadPyodideScript = async () => {
-      if ((window as any).loadPyodide) {
-        initPyodide();
-        return;
-      }
-      const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js";
-      script.onload = initPyodide;
-      document.body.appendChild(script);
-    };
+    let isMounted = true;
 
     const initPyodide = async () => {
+      if (!isMounted) return;
       try {
-        const py = await (window as any).loadPyodide({
-          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
-        });
-        setPyodide(py);
-        setIsLoadingPyodide(false);
+        if (!(window as any).pyodideInstance) {
+          (window as any).pyodideInstance = await (window as any).loadPyodide({
+            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+          });
+        }
+        if (isMounted) {
+          setPyodide((window as any).pyodideInstance);
+          setIsLoadingPyodide(false);
+        }
       } catch (err) {
         console.error("Failed to load Pyodide", err);
       }
     };
 
+    const loadPyodideScript = () => {
+      if ((window as any).loadPyodide) {
+        initPyodide();
+        return;
+      }
+      
+      if (document.getElementById("pyodide-script")) {
+        const checkInterval = setInterval(() => {
+          if ((window as any).loadPyodide) {
+            clearInterval(checkInterval);
+            initPyodide();
+          }
+        }, 100);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.id = "pyodide-script";
+      script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js";
+      script.onload = initPyodide;
+      document.body.appendChild(script);
+    };
+
     loadPyodideScript();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Load saved progress
@@ -188,7 +211,7 @@ export default function A2Practice() {
       
     } catch (error: any) {
       const errorStr = error.toString();
-      const lines = errorStr.split('\\n').filter((l: string) => l.trim().length > 0);
+      const lines = errorStr.split('\n').filter((l: string) => l.trim().length > 0);
       const lastLine = lines[lines.length - 1] || errorStr;
       
       setTestResults(prev => ({ ...prev, [question.id]: { passed: false, message: lastLine } }));
@@ -323,7 +346,7 @@ export default function A2Practice() {
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700"
+                  className="px-4 sm:px-6 pb-4 sm:pb-6 pt-4 sm:pt-6 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/30"
                 >
                   <div className="mb-4">
                     <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Description</h4>
@@ -351,6 +374,20 @@ export default function A2Practice() {
                     <textarea
                       value={userCode[question.id] !== undefined ? userCode[question.id] : question.initialCode}
                       onChange={(e) => handleCodeChange(question.id, e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Tab') {
+                          e.preventDefault();
+                          const target = e.target as HTMLTextAreaElement;
+                          const start = target.selectionStart;
+                          const end = target.selectionEnd;
+                          const value = target.value;
+                          const newValue = value.substring(0, start) + "    " + value.substring(end);
+                          handleCodeChange(question.id, newValue);
+                          setTimeout(() => {
+                            target.selectionStart = target.selectionEnd = start + 4;
+                          }, 0);
+                        }
+                      }}
                       className={cn(
                         "w-full h-48 p-4 rounded-xl font-mono text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors",
                         editorTheme === 'dark' 
