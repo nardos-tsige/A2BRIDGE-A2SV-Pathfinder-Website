@@ -13,7 +13,10 @@ import {
   GraduationCap,
   TrendingUp,
   Lightbulb,
-  Code2
+  Code2,
+  Github,
+  Terminal,
+  Trophy
 } from "lucide-react";
 
 export default function Awareness() {
@@ -199,6 +202,45 @@ export default function Awareness() {
             </div>
           </motion.div>
         </div>
+
+        {/* Portfolio Advice Section */}
+        <motion.div variants={itemVariants} className="mb-24">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Your Digital Footprint is Your Resume</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-lg max-w-3xl mx-auto">
+              A2SV and top tech companies don't just look at your grades. They look at what you build and how consistently you solve problems. To stand out, you must focus heavily on building an undeniable portfolio.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 p-8 rounded-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-white/10"></div>
+              <Github className="w-10 h-10 text-white mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">GitHub</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Push code daily. Your GitHub graph is a testament to your consistency. Showcase your personal projects, contribute to open source, and demonstrate your ability to build real-world, scalable applications. Make sure your repositories have clean READMEs.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-b from-amber-900/40 to-slate-900 border border-amber-700/30 p-8 rounded-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-amber-500/20"></div>
+              <Terminal className="w-10 h-10 text-amber-400 mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">LeetCode</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Master the patterns. A strong LeetCode profile proves your dedication to mastering Data Structures and Algorithms. Focus on medium and hard problems, participate in weekly contests, and aim for a high contest rating to prove your analytical skills.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-b from-blue-900/40 to-slate-900 border border-blue-700/30 p-8 rounded-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-blue-500/20"></div>
+              <Trophy className="w-10 h-10 text-blue-400 mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Codeforces</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Speed and precision matter. Competitive programming sharpens your problem-solving speed and your awareness of edge cases. A solid Codeforces rating is highly respected and often serves as a massive advantage in the A2SV selection process.
+              </p>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Preparation Tips */}
         <motion.div variants={itemVariants} className="bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-8 md:p-12 shadow-xl border border-slate-700 relative overflow-hidden">
