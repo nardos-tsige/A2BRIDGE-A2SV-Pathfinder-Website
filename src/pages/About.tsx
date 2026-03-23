@@ -7,12 +7,12 @@ import {
   CalendarDays, 
   MessageSquare, 
   Rocket,
-  Heart,
   Sparkles,
   Globe,
   Github,
   Trophy,
-  Terminal
+  Terminal,
+  Heart
 } from "lucide-react";
 
 export default function About() {
@@ -183,16 +183,16 @@ export default function About() {
             
             <div className="text-base text-slate-300 leading-relaxed space-y-3 relative z-10">
               <p>
-                Like many of you, I dreamed of joining A2SV. I applied with high hopes, but ultimately, I was rejected.
+                When I joined the software department, I heard people preparing for A2SV. I wanted to join, so I started preparing too.
               </p>
               <p>
-                That rejection was a massive eye-opener. I realized my failure was due to a lack of structured preparation and insider awareness. I didn't know exactly what to expect or which problems to prioritize.
+                But I think I started too late. I didn't know exactly what to study or how to prepare well, and because of that, I was rejected.
               </p>
               <blockquote className="text-lg font-serif italic text-white leading-snug my-6 py-4 border-y border-slate-800">
                 "I decided that my rejection shouldn't be the end of the story. It should be the beginning of someone else's success."
               </blockquote>
               <p className="text-sm text-slate-400">
-                A2BRIDGE is my commitment to ensuring no talent from our universities is left behind due to a lack of guidance.
+                A2BRIDGE is my way of making sure no one else is left behind because they started late or didn't have guidance.
               </p>
             </div>
           </div>

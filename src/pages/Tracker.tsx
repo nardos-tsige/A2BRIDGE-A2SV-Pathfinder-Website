@@ -304,6 +304,8 @@ export default function Tracker() {
         </p>
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded-xl text-blue-800 dark:text-blue-300 text-sm">
           <strong>Note:</strong> These are LeetCode questions just to get you started. As you finish them, look for more on LeetCode to continue your practice!
+          <br /><br />
+          <strong>Important:</strong> Don't forget to actually solve and submit your solutions on LeetCode! A2SV will check your LeetCode profile to verify your progress.
         </div>
       </motion.div>
 

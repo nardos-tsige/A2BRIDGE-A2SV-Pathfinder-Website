@@ -149,6 +149,8 @@ export default function Codeforces() {
         </p>
         <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl text-emerald-800 dark:text-emerald-300 text-sm">
           <strong>Note:</strong> These are Codeforces questions just to get you started. As you finish them, look for more on Codeforces to continue your practice!
+          <br /><br />
+          <strong>Important:</strong> Don't forget to actually solve and submit your solutions on Codeforces! A2SV will check your Codeforces profile to verify your progress.
         </div>
       </motion.div>
 
