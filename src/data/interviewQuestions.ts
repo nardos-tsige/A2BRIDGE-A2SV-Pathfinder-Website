@@ -176,5 +176,77 @@ export const INTERVIEW_QUESTIONS: InterviewQuestion[] = [
       "What is your biggest technical achievement?"
     ],
     sampleAnswer: "I am most proud of a university project where we built a local ride-sharing app. My specific contribution was implementing the pathfinding algorithm to connect riders with the nearest drivers using Dijkstra's algorithm. I optimized it to run efficiently even with a large number of nodes. Seeing the algorithm work seamlessly in the final demo was incredibly rewarding."
+  },
+  {
+    id: 15,
+    category: "Behavioral",
+    title: "What is your biggest failure and what did you learn from it?",
+    description: "This question assesses your humility, self-awareness, and ability to learn from mistakes. Education organizations want to see that you don't give up when things go wrong.",
+    tips: "Choose a real failure, not a disguised success. Focus 20% on the failure and 80% on what you learned and how you've changed your approach since then.",
+    relatedQuestions: [
+      "Tell me about a time you failed.",
+      "What is a mistake you made recently?"
+    ],
+    sampleAnswer: "My biggest failure was during a hackathon where I insisted on using a new framework I barely knew. We spent so much time debugging setup issues that we didn't finish the core features. I learned that while learning new tools is great, high-pressure situations require relying on what you know or allocating strict timeboxes for experimentation. Now, I always build MVPs with familiar tech first."
+  },
+  {
+    id: 16,
+    category: "Behavioral",
+    title: "What do you do when you are completely stuck on a coding problem?",
+    description: "This evaluates your problem-solving methodology and resourcefulness. It shows if you have a structured approach to overcoming roadblocks.",
+    tips: "Mention a step-by-step process: taking a break, rubber duck debugging, reading documentation, and finally, knowing when to ask for help.",
+    relatedQuestions: [
+      "How do you handle roadblocks?",
+      "Describe your debugging process."
+    ],
+    sampleAnswer: "When I'm stuck, I first step away from the screen for 10 minutes to clear my head. Then, I try 'rubber duck debugging'—explaining my code line-by-line out loud. If that fails, I consult documentation or Stack Overflow. If I'm still stuck after an hour, I reach out to a peer or mentor with a clear summary of what I've tried so far to respect their time."
+  },
+  {
+    id: 17,
+    category: "Behavioral",
+    title: "Where do you see yourself in 5 years?",
+    description: "Organizations like A2SV invest heavily in their students. They want to know if your long-term goals align with their mission of creating impactful tech leaders.",
+    tips: "Be ambitious but realistic. Mention your desire to grow as a software engineer, take on leadership roles, and give back to your community or the organization.",
+    relatedQuestions: [
+      "What are your long-term career goals?",
+      "How does this program fit into your future plans?"
+    ],
+    sampleAnswer: "In five years, I see myself working as a Senior Software Engineer at a top global tech company, building scalable systems that solve real-world problems. Additionally, I want to be in a position where I can mentor aspiring African developers, perhaps even returning to A2SV as an alumni mentor to help bridge the gap for the next generation."
+  },
+  {
+    id: 18,
+    category: "Behavioral",
+    title: "Tell me about a time you had to learn a new technology or framework quickly.",
+    description: "Tech is always evolving, and intensive programs require rapid learning. This checks your adaptability and self-learning skills.",
+    tips: "Highlight a specific situation, the learning strategy you used (e.g., reading docs, building small projects), and the successful outcome.",
+    relatedQuestions: [
+      "How adaptable are you to new tools?",
+      "Describe a time you had to adapt to a major change."
+    ],
+    sampleAnswer: "For a recent group project, we decided to use React, which I had never used before. We only had two weeks. I dedicated my first weekend to building three small mini-projects from the official documentation to understand the component lifecycle and state management. By Monday, I was able to contribute to our main codebase and even helped a teammate debug a hooks issue."
+  },
+  {
+    id: 19,
+    category: "Behavioral",
+    title: "Why should we select you over other candidates?",
+    description: "This is your closing pitch. It's an opportunity to summarize your unique value proposition and reiterate your passion.",
+    tips: "Don't put down other candidates. Instead, focus on your unique combination of technical drive, resilience, and commitment to the community.",
+    relatedQuestions: [
+      "What makes you unique?",
+      "Why are you the best fit for this program?"
+    ],
+    sampleAnswer: "While I'm sure there are many talented applicants, I bring a unique combination of relentless persistence and a deep commitment to community growth. I don't just code for myself; I actively organize study groups and share resources. My technical foundation is solid, but my drive to push through difficult challenges and lift others up with me makes me an ideal fit for A2SV's rigorous and collaborative environment."
+  },
+  {
+    id: 20,
+    category: "Behavioral",
+    title: "Describe a time you took initiative on a project without being asked.",
+    description: "Leadership and proactivity are highly valued in top-tier educational programs. This shows you don't just wait for instructions.",
+    tips: "Share a story where you identified a problem or an area for improvement and took actionable steps to solve it independently.",
+    relatedQuestions: [
+      "Tell me about a time you showed leadership.",
+      "Give an example of your proactivity."
+    ],
+    sampleAnswer: "In my university coding club, I noticed that new members were struggling to set up their development environments, which delayed our projects. Without being asked, I wrote a comprehensive, step-by-step setup guide and created a simple bash script to automate the installation of necessary tools. This reduced onboarding time from a week to just a few hours."
   }
 ];

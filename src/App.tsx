@@ -118,7 +118,7 @@ export default function App() {
             </main>
             <footer className="bg-slate-900 text-slate-400 py-8 text-center border-t border-slate-800">
               <p>
-                &copy; {new Date().getFullYear()} A2BRIDGE. Built by Nardos Tsige. From my rejection to your success.
+                &copy; {new Date().getFullYear()} A2BRIDGE. From my rejection to your success.
               </p>
             </footer>
           </div>

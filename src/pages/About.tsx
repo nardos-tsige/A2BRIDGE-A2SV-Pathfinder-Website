@@ -174,24 +174,24 @@ export default function About() {
         </motion.div>
 
         {/* The Story Behind the Bridge (Compact) */}
-        <motion.div variants={itemVariants} className="mb-20 max-w-4xl mx-auto">
-          <div className="bg-slate-900/40 border border-slate-800 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <motion.div variants={itemVariants} className="mb-20 max-w-2xl mx-auto">
+          <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 md:p-8 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"></div>
             
-            <Heart className="w-10 h-10 text-rose-500 mx-auto mb-6 relative z-10" />
-            <h2 className="text-3xl font-bold text-white mb-6 relative z-10">The Story Behind A2BRIDGE</h2>
+            <Heart className="w-8 h-8 text-rose-500 mx-auto mb-4 relative z-10" />
+            <h2 className="text-2xl font-bold text-white mb-4 relative z-10">The Story Behind A2BRIDGE</h2>
             
-            <div className="text-lg text-slate-300 leading-relaxed space-y-4 relative z-10">
+            <div className="text-base text-slate-300 leading-relaxed space-y-3 relative z-10">
               <p>
-                Hi, I'm <strong className="text-purple-400">Nardos Tsige</strong>. Like many of you, I dreamed of joining A2SV. I applied with high hopes, but ultimately, I was rejected.
+                Like many of you, I dreamed of joining A2SV. I applied with high hopes, but ultimately, I was rejected.
               </p>
               <p>
                 That rejection was a massive eye-opener. I realized my failure was due to a lack of structured preparation and insider awareness. I didn't know exactly what to expect or which problems to prioritize.
               </p>
-              <blockquote className="text-2xl font-serif italic text-white leading-snug my-8 py-6 border-y border-slate-800">
+              <blockquote className="text-lg font-serif italic text-white leading-snug my-6 py-4 border-y border-slate-800">
                 "I decided that my rejection shouldn't be the end of the story. It should be the beginning of someone else's success."
               </blockquote>
-              <p className="text-slate-400">
+              <p className="text-sm text-slate-400">
                 A2BRIDGE is my commitment to ensuring no talent from our universities is left behind due to a lack of guidance.
               </p>
             </div>

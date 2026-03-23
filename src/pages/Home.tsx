@@ -290,17 +290,30 @@ function Dashboard() {
 
         {/* Sidebar */}
         <div className="space-y-8">
-          {/* Motivation Quote */}
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 p-6 rounded-2xl border border-amber-100 dark:border-amber-500/20">
-            <h3 className="text-sm font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider mb-4">
-              Founder's Motivation
+          {/* Weekly Target */}
+          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-500/20">
+            <h3 className="text-sm font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+              <Target className="w-4 h-4" /> Weekly Target
             </h3>
-            <blockquote className="text-lg font-medium text-slate-800 dark:text-slate-200 italic mb-4">
-              "Rejection gave me a way to make many succeed"
-            </blockquote>
-            <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
-              — Nardos Tsige
-            </p>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-slate-600 dark:text-slate-400">Problems Solved</span>
+                  <span className="font-bold text-emerald-700 dark:text-emerald-400">
+                    {user?.stats?.problemsSolved || 0} / 10
+                  </span>
+                </div>
+                <div className="w-full bg-emerald-200 dark:bg-emerald-900/50 rounded-full h-2">
+                  <div 
+                    className="bg-emerald-500 h-2 rounded-full transition-all duration-500"
+                    style={{ width: `${Math.min(((user?.stats?.problemsSolved || 0) / 10) * 100, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Solve {Math.max(10 - (user?.stats?.problemsSolved || 0), 0)} more problems this week to hit your target!
+              </p>
+            </div>
           </div>
 
           {/* Recent Activity */}
