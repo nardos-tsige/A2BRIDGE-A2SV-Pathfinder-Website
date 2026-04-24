@@ -17,10 +17,10 @@ Live Demo: https://a2-bridge-a2-sv-pathfinder-website.vercel.app/
 
 **Run Locally**
 
-# Install dependencies
+#Install dependencies
 npm install
 
-# Run the development server
+#Run the development server
 npm run dev
 
 From rejection to creation. — If this resonates with you or helped in any way, **a star means the world. ⭐**
