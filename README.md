@@ -1,28 +1,27 @@
-**A2BRIDGE**
+# A2BRIDGE
 
-**A2SV Pathfinder Website**
-Live Demo: https://a2-bridge-a2-sv-pathfinder-website.vercel.app/
+## A2SV Pathfinder Website
 
-**About**
-      This project grew from rejection and turned into something meaningful. A personal exploration of persistence, creativity, and turning setbacks into something real.
+**Live Demo:** [https://a2-bridge-a2-sv-pathfinder-website.vercel.app/](https://a2-bridge-a2-sv-pathfinder-website.vercel.app/)
 
-**Tech Stack**
-  1. TypeScript — Core logic and type safety
+## About
 
-  2. JavaScript — Interactive features and utilities
+This project grew from rejection and turned into something meaningful. A personal exploration of persistence, creativity, and turning setbacks into something real.
 
-  3. Node.js — Backend runtime
+## Tech Stack
 
-  4. Vercel — Deployment
+- **TypeScript** — Core logic and type safety
+- **JavaScript** — Interactive features and utilities
+- **Node.js** — Backend runtime
+- **Vercel** — Deployment
 
-**Run Locally**
+## Run Locally
 
-#Install dependencies
+# Install dependencies
 npm install
 
-#Run the development server
+# Run the development server
 npm run dev
 
 From rejection to creation. — If this resonates with you or helped in any way, **a star means the world. ⭐**
-
 Nardos T.
