@@ -72,7 +72,7 @@ function LandingPage() {
         <div className="flex-1 w-full max-w-lg lg:max-w-none relative">
           <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-emerald-500/20 rounded-3xl blur-2xl transform rotate-3"></div>
           <img 
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+            src="https://tse2.mm.bing.net/th/id/OIP.0l5M_1p3loToP8DSpdRgygHaHa?w=1080&h=1080&rs=1&pid=ImgDetMain&o=7&rm=3" 
             alt="Students coding together" 
             className="relative rounded-3xl shadow-2xl border border-slate-700/50 object-cover w-full h-[400px]"
             referrerPolicy="no-referrer"
