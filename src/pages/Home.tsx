@@ -72,7 +72,7 @@ function LandingPage() {
         <div className="flex-1 w-full max-w-lg lg:max-w-none relative">
           <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-emerald-500/20 rounded-3xl blur-2xl transform rotate-3"></div>
           <img 
-            src="https://tse2.mm.bing.net/th/id/OIP.0l5M_1p3loToP8DSpdRgygHaHa?w=1080&h=1080&rs=1&pid=ImgDetMain&o=7&rm=3" 
+            src="https://res.cloudinary.com/betterunite-com/image/upload/fl_lossy,q_auto,c_limit,f_auto,e_sharpen,h_600/orgs/africatosiliconvalley/campaigns/edc626a8-5c93-4199-9ce1-20afdd6863cc/lko3hbskw13rdbdybw43" 
             alt="Students coding together" 
             className="relative rounded-3xl shadow-2xl border border-slate-700/50 object-cover w-full h-[400px]"
             referrerPolicy="no-referrer"
