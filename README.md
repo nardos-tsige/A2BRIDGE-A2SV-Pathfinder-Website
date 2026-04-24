@@ -1,20 +1,28 @@
-<div align="center">
-<!-- <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" /> -->
-</div>
+**A2BRIDGE**
 
-Run and deploy your AI Studio app
+**A2SV Pathfinder Website**
+Live Demo: https://a2-bridge-a2-sv-pathfinder-website.vercel.app/
 
-This contains everything you need to run your app locally.
+**About**
+      This project grew from rejection and turned into something meaningful. A personal exploration of persistence, creativity, and turning setbacks into something real.
 
-View your app in AI Studio: https://ai.studio/apps/99999bff-4a6d-4b36-9839-f7401f358b4f
+**Tech Stack**
+  1. TypeScript — Core logic and type safety
 
-## Run Locally
+  2. JavaScript — Interactive features and utilities
 
-**Prerequisites:**  Node.js
+  3. Node.js — Backend runtime
 
+  4. Vercel — Deployment
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+**Run Locally**
+
+# Install dependencies
+npm install
+
+# Run the development server
+npm run dev
+
+From rejection to creation. — If this resonates with you or helped in any way, **a star means the world. ⭐**
+
+Nardos T.
