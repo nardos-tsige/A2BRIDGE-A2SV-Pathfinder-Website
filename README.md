@@ -58,7 +58,6 @@ Experience the platform live:
 
 ### Installation & Setup
 
-```bash
 # Clone the repository
 git clone https://github.com/nardos-tsige/a2bridge.git
 cd a2bridge
@@ -68,14 +67,7 @@ npm install
 
 # Run the development server
 npm run dev
-Then open http://localhost:5173 in your browser (Vite default port).
 
-**Firebase Configuration**
-Create a Firebase project at Firebase Console
-
-Enable Firestore Database
-
-Copy your Firebase config and update .env:
 Then open http://localhost:5173 in your browser (Vite default port).
 
 **Firebase Configuration**
@@ -96,65 +88,63 @@ VITE_FIREBASE_APP_ID=your_app_id
 Deploy Firestore rules using firestore.rules
 
 **📂 Project Structure**
-
 a2bridge/
-├── public/                 # Static assets
-├── src/                    # Source code
-│   ├── components/         # Reusable UI components
-│   └── pages/              # Page components
-├── .env.example            # Environment variables template
-├── .gitignore              # Git ignore rules
-├── index.html              # Entry HTML file
-├── package.json            # Dependencies and scripts
-├── tsconfig.json           # TypeScript configuration
-├── vite.config.ts          # Vite configuration
-├── firestore.rules         # Firebase Firestore security rules
-├── firebase-applet-config.json  # Firebase configuration
-├── firebase-blueprint.json      # Firebase data blueprint
-├── metadata.json           # LeetCode problems metadata
-├── extracted.json          # Extracted problem data
-├── chunk1.json             # Problem data chunk 1
-├── chunk2.json             # Problem data chunk 2
-├── chunk3.json             # Problem data chunk 3
-├── chunk4.json             # Problem data chunk 4
-├── add_descriptions.cjs    # Script to add problem descriptions
-├── check_missing.cjs       # Script to check missing problems
-├── extract.cjs             # Script to extract problem data
-├── find_dups.cjs           # Script to find duplicates
-├── generate_chunk2.cjs     # Script to generate chunk 2
-├── generate_chunk3.cjs     # Script to generate chunk 3
-├── generate_chunk4.cjs     # Script to generate chunk 4
-├── merge_all_chunks.cjs    # Script to merge all chunks
-├── merge_chunks.cjs        # Script to merge chunks
-├── merge_last_two.cjs      # Script to merge last two chunks
-├── rewrite_leetcode_details.cjs  # Script to rewrite problem details
-├── package-lock.json       # Locked dependencies
-└── README.md               # Project documentation
-
+├── public/ # Static assets
+├── src/ # Source code
+│ ├── components/ # Reusable UI components
+│ └── pages/ # Page components
+├── .env.example # Environment variables template
+├── .gitignore # Git ignore rules
+├── index.html # Entry HTML file
+├── package.json # Dependencies and scripts
+├── tsconfig.json # TypeScript configuration
+├── vite.config.ts # Vite configuration
+├── firestore.rules # Firebase Firestore security rules
+├── firebase-applet-config.json # Firebase configuration
+├── firebase-blueprint.json # Firebase data blueprint
+├── metadata.json # LeetCode problems metadata
+├── extracted.json # Extracted problem data
+├── chunk1.json # Problem data chunk 1
+├── chunk2.json # Problem data chunk 2
+├── chunk3.json # Problem data chunk 3
+├── chunk4.json # Problem data chunk 4
+├── add_descriptions.cjs # Script to add problem descriptions
+├── check_missing.cjs # Script to check missing problems
+├── extract.cjs # Script to extract problem data
+├── find_dups.cjs # Script to find duplicates
+├── generate_chunk2.cjs # Script to generate chunk 2
+├── generate_chunk3.cjs # Script to generate chunk 3
+├── generate_chunk4.cjs # Script to generate chunk 4
+├── merge_all_chunks.cjs # Script to merge all chunks
+├── merge_chunks.cjs # Script to merge chunks
+├── merge_last_two.cjs # Script to merge last two chunks
+├── rewrite_leetcode_details.cjs # Script to rewrite problem details
+├── package-lock.json # Locked dependencies
+└── README.md # Project documentation
 **🗄️ Data Processing Scripts**
 
 The project includes several Node.js scripts for managing LeetCode problem data:
 
-Script	Purpose
-extract.cjs	Extract problem data from source
-add_descriptions.cjs	Add detailed descriptions to problems
-check_missing.cjs	Identify missing problems
-find_dups.cjs	Find and remove duplicate entries
-merge_*.cjs	Merge JSON chunk files
-rewrite_leetcode_details.cjs	Rewrite problem details formatting
+| Script | Purpose |
+|--------|---------|
+| extract.cjs | Extract problem data from source |
+| add_descriptions.cjs | Add detailed descriptions to problems |
+| check_missing.cjs | Identify missing problems |
+| find_dups.cjs | Find and remove duplicate entries |
+| merge_*.cjs | Merge JSON chunk files |
+| rewrite_leetcode_details.cjs | Rewrite problem details formatting |
 
 **🔥 Firebase Setup**
 
-Import firestore.rules to your Firebase project
-
-Use firebase-applet-config.json and firebase-blueprint.json as references for your data structure
-
-Enable Firestore in your Firebase project
+- Import firestore.rules to your Firebase project
+- Use firebase-applet-config.json and firebase-blueprint.json as references for your data structure
+- Enable Firestore in your Firebase project
 
 **🚢 Deployment**
 
 This project is deployed on Vercel. To deploy your own instance:
 
+```bash
 # Install Vercel CLI
 npm i -g vercel
 
@@ -163,37 +153,30 @@ vercel
 
 # Or push to GitHub and connect to Vercel
 git push origin main
-
 https://vercel.com/button
 
-**🤝 Contributing**
+<strong>🤝 Contributing</strong>
 
 Contributions are what make the open-source community such an amazing place to learn and grow. Any contributions you make are greatly appreciated.
 
-Fork the Project
+1. Fork the Project
+2. Create your Feature Branch
+3. Commit your Changes
+4. Push to the Branch
+5. Open a Pull Request
 
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
-
-Commit your Changes (git commit -m 'Add some AmazingFeature')
-
-Push to the Branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
-
-**📝 License**
+<strong>📝 License</strong>
 
 Distributed under the MIT License. See LICENSE for more information.
 
-**📧 Contact**
+<strong>📧 Contact</strong>
 
 Nardos Tsige – @nardos-tsige
 
 Project Link: https://github.com/nardos-tsige/a2bridge
 
-**🙏 Acknowledgments**
+<strong>🙏 Acknowledgments</strong>
 
-A2SV for inspiring this mission and creating a life-changing program
-
-Senior A2SVians who shared their real interview questions and advice
-
-Every student who turns rejection into determination
+- A2SV for inspiring this mission and creating a life-changing program
+- Senior A2SVians who shared their real interview questions and advice
+- Every student who turns rejection into determination
