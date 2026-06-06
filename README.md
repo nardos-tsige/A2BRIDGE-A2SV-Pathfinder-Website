@@ -144,7 +144,6 @@ The project includes several Node.js scripts for managing LeetCode problem data:
 
 This project is deployed on Vercel. To deploy your own instance:
 
-```bash
 # Install Vercel CLI
 npm i -g vercel
 
@@ -153,9 +152,12 @@ vercel
 
 # Or push to GitHub and connect to Vercel
 git push origin main
-https://vercel.com/button
 
-<strong>🤝 Contributing</strong>
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/button)
+
+---
+
+**🤝 Contributing**
 
 Contributions are what make the open-source community such an amazing place to learn and grow. Any contributions you make are greatly appreciated.
 
@@ -165,17 +167,23 @@ Contributions are what make the open-source community such an amazing place to l
 4. Push to the Branch
 5. Open a Pull Request
 
-<strong>📝 License</strong>
+---
+
+**📝 License**
 
 Distributed under the MIT License. See LICENSE for more information.
 
-<strong>📧 Contact</strong>
+---
 
-Nardos Tsige – @nardos-tsige
+**📧 Contact**
 
-Project Link: https://github.com/nardos-tsige/a2bridge
+Nardos Tsige – [@nardos-tsige](https://github.com/nardos-tsige)
 
-<strong>🙏 Acknowledgments</strong>
+Project Link: [https://github.com/nardos-tsige/a2bridge](https://github.com/nardos-tsige/a2bridge)
+
+---
+
+**🙏 Acknowledgments**
 
 - A2SV for inspiring this mission and creating a life-changing program
 - Senior A2SVians who shared their real interview questions and advice
